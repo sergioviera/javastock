@@ -1,26 +1,33 @@
 package frd.app;
 
-import java.sql.SQLException;
-import java.util.Date;
-
-import frd.db.UserManager;
+import java.util.Scanner;
 
 public class Main {
+	private static Scanner scanIn = new Scanner(System.in);
+
 	public static void main(String[] args){
 		System.out.println("*********** Iniciando ***********");
-		try{
-			//creo la tabla dbUser (esto se debe hacer sólo una vez)
-			UserManager.createDbUserTable();
-			System.out.println( "Tabla Users Creada!" );
-			
-			//cargo dos usuarios
-			UserManager.insertUser(1, "Usuario 1", "admin", new Date());
-			UserManager.insertUser(2, "Usuario 2", "admin", new Date());
-
+		System.out.println("q:salir, u:listar usuarios, u-add:agregar usuario, u-del:borrar usuario");
 		
-		}catch(SQLException ex){
-			System.err.println( "ERROR: " + ex.getLocalizedMessage() );
+		String response = scanIn.nextLine();
+		while( !"q".equalsIgnoreCase(response) ){
+
+			if( "u".equalsIgnoreCase(response) ){
+				UserUI.showAll();
+			}
+			
+			if( "u-add".equalsIgnoreCase(response) ){
+				UserUI.add( scanIn );
+			}
+			
+			if( "u-del".equalsIgnoreCase(response) ){
+				UserUI.del( scanIn );
+			}
+			
+			System.out.println(">");
+			response = scanIn.nextLine();
 		}
-		System.out.println("*********** Fin de app ***********");
+		
+        System.out.println("*********** Fin de app ***********");
 	}
 }
