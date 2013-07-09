@@ -3,17 +3,23 @@ package frd.db;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import frd.model.User;
 
 public class JDBCManager {
 
 	private static final String DB_DRIVER = "org.postgresql.Driver";
-	private static final String DB_CONNECTION = "jdbc:postgresql://127.0.0.1:5432/basededatos";
-	private static final String DB_USER = "user";
-	private static final String DB_PASSWORD = "password";
+	private static final String DB_CONNECTION = "jdbc:postgresql://127.0.0.1:5432/postgres";
+	private static final String DB_USER = "postgres";
+	private static final String DB_PASSWORD = "admin";
 	
 	protected static final DateFormat dateFormat = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
 
@@ -32,14 +38,14 @@ public class JDBCManager {
 		try {
 			connection = DriverManager.getConnection( DB_CONNECTION, DB_USER, DB_PASSWORD);
 		} catch (SQLException e) {
-			System.out.println("Falla de conecci�n! Ver detalles en consola...");
+			System.out.println("Falla de coneccion! Ver detalles en consola...");
 			e.printStackTrace();
 		}
  
 		if (connection != null) {
 			System.out.println("Hecho, ahora se tiene el control de la base de datos!");
 		} else {
-			System.out.println("La conecci�n ha fallado!");
+			System.out.println("La coneccion ha fallado!");
 		}
 		
 		return connection;
@@ -83,17 +89,32 @@ public class JDBCManager {
 		}
  	}
 	
-	protected static ResultSet executeQuery( String sql ) throws SQLException{
+	protected static List<HashMap<String,Object>> executeQuery( String sql ) throws SQLException{
+		List<HashMap<String,Object>> result = new ArrayList<HashMap<String,Object>>();
 		Connection dbConnection = null;
 		Statement statement = null;
-		ResultSet rs = null;
 		
 		try {
 			dbConnection = getDBConnection();
 			statement = dbConnection.createStatement();
  
 			System.out.println( "RUNNING >> " + sql );
-			rs = statement.executeQuery( sql );
+			ResultSet rs = statement.executeQuery( sql );
+			
+			while (rs.next()) {
+				ResultSetMetaData metaData = rs.getMetaData();
+				HashMap<String,Object> register = new HashMap<String,Object>();
+				
+				int count = metaData.getColumnCount();
+				for (int i = 1; i <= count; i++) {
+					String columnName = metaData.getColumnName(i);
+					register.put( columnName, rs.getObject(columnName) );
+				}
+
+				//Lo agrego a la lista de resultado
+				result.add( register );
+			}
+
 			System.out.println("Query corrida exitosamente!");
 
 		} catch (SQLException e) {
@@ -103,7 +124,7 @@ public class JDBCManager {
  			if (dbConnection != null) dbConnection.close();
 		}
 		
-		return rs;
+		return result;
 
 	}
 }
