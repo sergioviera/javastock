@@ -12,12 +12,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import frd.model.User;
-
 public class JDBCManager {
 
+	// 4 POSGRESS
 	private static final String DB_DRIVER = "org.postgresql.Driver";
 	private static final String DB_CONNECTION = "jdbc:postgresql://127.0.0.1:5432/postgres";
+
+	// 4 MYSQL
+	//private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+	//private static final String DB_CONNECTION = "jdbc:mysql://127.0.0.1:5432/dbname";
+	
 	private static final String DB_USER = "postgres";
 	private static final String DB_PASSWORD = "admin";
 	
