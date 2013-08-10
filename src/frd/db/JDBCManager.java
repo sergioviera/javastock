@@ -28,7 +28,6 @@ public class JDBCManager {
 	protected static final DateFormat dateFormat = new SimpleDateFormat( "yyyy/MM/dd HH:mm:ss" );
 
 	private static Connection getDBConnection() {
-		System.out.println("-------- PostgreSQL JDBC Connection Testing ------------");
  
 		try {
 			Class.forName( DB_DRIVER );
@@ -37,7 +36,6 @@ public class JDBCManager {
 			e.printStackTrace();
 		}
  
-		System.out.println("PostgreSQL JDBC Driver Registrado!");
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection( DB_CONNECTION, DB_USER, DB_PASSWORD);
@@ -47,7 +45,6 @@ public class JDBCManager {
 		}
  
 		if (connection != null) {
-			System.out.println("Hecho, ahora se tiene el control de la base de datos!");
 		} else {
 			System.out.println("La coneccion ha fallado!");
 		}
@@ -62,9 +59,9 @@ public class JDBCManager {
 		try {
 			dbConnection = getDBConnection();
 			statement = dbConnection.createStatement();
-			System.out.println( "RUNNING >> " + sql );
+//			System.out.println( "RUNNING >> " + sql );
 			statement.execute( sql );
-			System.out.println("Query corrida exitosamente!");
+//			System.out.println("Query corrida exitosamente!");
 
 		} catch (SQLException e) {
  			System.err.println(e.getMessage());
@@ -82,9 +79,9 @@ public class JDBCManager {
 			dbConnection = getDBConnection();
 			statement = dbConnection.createStatement();
  
-			System.out.println( "RUNNING >> " + sql );
+//			System.out.println( "RUNNING >> " + sql );
 			statement.executeUpdate(sql);
-			System.out.println("Query corrida exitosamente!");
+//			System.out.println("Query corrida exitosamente!");
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		} finally {
@@ -102,7 +99,7 @@ public class JDBCManager {
 			dbConnection = getDBConnection();
 			statement = dbConnection.createStatement();
  
-			System.out.println( "RUNNING >> " + sql );
+//			System.out.println( "RUNNING >> " + sql );
 			ResultSet rs = statement.executeQuery( sql );
 			
 			while (rs.next()) {
@@ -119,7 +116,7 @@ public class JDBCManager {
 				result.add( register );
 			}
 
-			System.out.println("Query corrida exitosamente!");
+//			System.out.println("Query corrida exitosamente!");
 
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());

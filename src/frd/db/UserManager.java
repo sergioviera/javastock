@@ -66,8 +66,8 @@ public class UserManager extends JDBCManager {
 			if( register.containsKey("created_by") )
 				usr.setCreatedBy((String) register.get("created_by") );
 			
-			if( register.containsKey("create_date") )
-				usr.setCreateDate((Date) register.get("create_date") );
+			if( register.containsKey("created_date") )
+				usr.setCreateDate((Date) register.get("created_date") );
 
 			result.add( usr );
 		}
